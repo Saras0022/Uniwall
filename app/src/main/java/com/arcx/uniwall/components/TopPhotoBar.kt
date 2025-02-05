@@ -1,8 +1,6 @@
 package com.arcx.uniwall.components
 
-import android.app.WallpaperManager
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,10 +20,6 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -33,14 +27,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil3.Bitmap
-import coil3.ImageLoader
-import coil3.request.ImageRequest
-import coil3.toBitmap
 import com.arcx.network.domain.Photo
 import com.arcx.uniwall.models.TopBarViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 enum class WallpaperOptions {
     HOME_ONLY,
@@ -72,7 +60,9 @@ fun TopPhotoBar(modifier: Modifier = Modifier, photo: Photo, viewModel: TopBarVi
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxHeight().clickable { viewModel.enableOrDisableWallpaper() }
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .clickable { viewModel.enableOrDisableWallpaper() }
             ) {
                 Icon(Icons.Filled.Image, "Set Wallpaper", tint = Color.White)
                 Spacer(Modifier.width(6.dp))
@@ -84,7 +74,8 @@ fun TopPhotoBar(modifier: Modifier = Modifier, photo: Photo, viewModel: TopBarVi
                 modifier = Modifier
                     .fillMaxHeight()
                     .clickable {
-//                        viewModel.downloadPhotoHotLink(photo)
+                        viewModel.downloadPhoto(context, photo)
+                        viewModel.downloadPhotoHotLink(photo)
                     }
             )
         }

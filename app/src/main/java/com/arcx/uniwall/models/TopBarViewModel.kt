@@ -1,12 +1,15 @@
 package com.arcx.uniwall.models
 
+import android.app.DownloadManager
 import android.app.WallpaperManager
 import android.content.Context
 import android.graphics.Bitmap
+import android.os.Environment
 import android.widget.Toast
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import coil3.ImageLoader
@@ -32,6 +35,18 @@ class TopBarViewModel @Inject constructor(
         viewModelScope.launch {
             photoRepository.downloadPhoto(photo.id)
         }
+    }
+
+    fun downloadPhoto(context: Context, photo: Photo) {
+        val url = photo.urls["full"]!!
+        val fileName = photo.id + ".png"
+        val request = DownloadManager.Request(url.toUri())
+            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+            .setTitle(fileName)
+            .setMimeType("image/png")
+            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
+        val downloadManager = context.getSystemService(DownloadManager::class.java)
+        downloadManager.enqueue(request)
     }
 
     fun enableOrDisableWallpaper() {

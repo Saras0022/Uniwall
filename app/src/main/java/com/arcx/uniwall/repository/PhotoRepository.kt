@@ -10,12 +10,8 @@ class PhotoRepository @Inject constructor(private val ktorClient: KtorClient) {
         return ktorClient.fetchPhotos(criteria, page)
     }
 
-    suspend fun fetchSinglePhoto(id: String): ApiOperation<Photo> {
+    fun fetchSinglePhoto(id: String): ApiOperation<Photo> {
         return ktorClient.fetchSinglePhoto(id)
-    }
-
-    suspend fun fetchSearchedPhoto(criteria: String, page: Int): ApiOperation<List<Photo>> {
-        return ktorClient.searchPhotos(criteria, page)
     }
 
     suspend fun downloadPhoto(id: String) {
